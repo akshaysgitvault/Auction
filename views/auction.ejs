@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <style>
+    input[type=text], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    input[type=submit] {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    input[type=submit]:hover {
+      background-color: #45a049;
+    }
+    
+    div {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    </style>
+  <body>
+    <center>
+   
+    <div class="form-modalID">
+     <h2>GENERATE ID</h2>
+      <div id="generateId">
+        <form id="genIdform">
+          <div>
+          <center>
+            <table>
+              <tr>
+                <td><input text="text" data-validation="required" name="user" id="user" placeholder="Enter the userAddress"
+                    data-validation-regexp="^([a-zA-Z]+)$"></td>
+               
+            </table>
+          </center>
+          <center>
+            <button class="btn col-sm-3" style="background:#33cc99 ;" type="submit" onClick="getValue(event)"> Submit
+            </button>
+          </center>
+          <table>
+            <tr>
+              <td><span id="created"></span></td>
+          </table></div>
+        </form>
+      </div>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+      
+      
+      <script>
+        function getValue(event) {
+          event.preventDefault();
+          let user = document.getElementById('user').value;
+         
+          if (user.length == '') {
+            alert("Please provide the details correctly!!")
+          }
+         
+          else {
+            $.post('/AddressId', { user}, (data) => {
+              console.log(data.txn)
+              document.getElementById('created').innerHTML = data.txn;
+            });
+          }
+        }
+      </script>
+
+      
+      <script>//valiation item name
+        $.validate({
+          modules: 'html5'
+        });
+      </script>
+      <script>    //validation private key
+        $.validate({
+          validateOnBlur: false, // disable validation when input looses focus
+          errorMessagePosition: 'bottom', // Instead of 'inline' which is default
+          scrollToTopOnError: false // Set this property to true on longer forms
+        });
+      </script>
+  
+      <!--End of property id generation-->
+  </div>
+
+
+
+  <br>
+  <br>
+  <h2>CREATE ASSET</h2>
+  
+<div>
+ 
+
+  <form action="createAsset"  method="POST" enctype="multipart/form-data">
+    <label for="id">Asset ID</label>
+    <input type="text" name="id">
+
+    <label for="name">Asset Name</label>
+    <input type="text" name="name" >
+
+    <label for="file">Upload File</label>
+    <input type="file" name="uploadFile" required />
+  
+    <input type="submit" value="Submit">
+  </form>
+
+</div>
+  <table>
+
+    <td>
+
+      <h2>Auction Details</h2>
+      <br>
+      
+      <div id="details">
+        <!-- <p><b>car Brand</b> : <%= car[0] %></p>
+        <br>
+        <p><b>car Registration Number</b> : <%= car[1] %></p> -->
+        <br>
+        <p><b>Current asset Owner</b> : <%= car[2] %></p>
+        <br>
+        <p><b>Auction Owner</b> : <%= data[3] %></p>
+        <br>
+        <p id="endingTime"><b>Auction End</b> : <%= data[0] %></p>
+        <br>
+        <p><b>Highest Bid</b> : <%= HighestBid %> </p>
+        <br>
+        <p><b>Highest Bidder</b> : <%= data[2] %></p>
+        <br>
+        <p><b>Auction Status</b> : <%= state %></p>
+         </td>
+        </div>
+      
+  
+    <td>
+      <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br><br> <br><br> <br>
+      <h2>Start Bidding</h2>
+
+    
+      <select id="Bidders">
+        <option value="<%= data1[0]%>"><%= data1[0]%></b> </option>
+        <option value="<%= data1[1]%>"><%= data1[1]%></b></option>
+        <option value="<%= data1[2]%>"><%= data1[2]%></b></option>
+        <option value="<%= data1[3]%>"><%= data1[3]%></option>
+        <option value="<%= data1[4]%>"><%= data1[4]%></option>
+      </select>
+      <input id="amount" name="amount" type="text" placeholder="Amount (ether)">
+      <input type="submit" id="bidAction" value="Bid">
+      
+      <br>
+      <br>
+
+      <p class="stylename">Check your Bid value here:</p>
+      <input id="address" name="address" type="text" placeholder="Address">
+      <input type="submit" id="bidValue" value="Bid Value" />
+      <p id="demo"></p>
+      <br>
+      <br>
+
+      <p class="stylename">Get Your bids (For loosers!!!):</p>
+      <select id="AddressList1">
+        <option value="<%= data1[0]%>"><%= data1[0]%></option>
+        <option value="<%= data1[1]%>"><%= data1[1]%></option>
+        <option value="<%= data1[2]%>"><%= data1[2]%></option>
+        <option value="<%= data1[3]%>"><%= data1[3]%></option>
+        <option value="<%= data1[4]%>"><%= data1[4]%></option>
+      </select>
+      <input type="submit" id="getBidBack" value="Get Your Bids " />
+
+      <br>
+      <br>
+
+      <p class="stylename">Withdraw Highest Bid from Contract :</p>
+
+      
+      <select id="AddressList">
+        <option value="<%= data1[0]%>"><%= data1[0]%></option>
+        <option value="<%= data1[1]%>"><%= data1[1]%></option>
+        <option value="<%= data1[2]%>"><%= data1[2]%></option>
+        <option value="<%= data1[3]%>"><%= data1[3]%></option>
+        <option value="<%= data1[4]%>"><%= data1[4]%></option>
+      </select>
+      <input type="submit" id="withdrawBid" value="Withdraw Bid" />
+      </form>
+    </td>
+    </tr>
+  </table>
+  <br>
+  <br>
+
+<!-- 
+  <label for="owner">New Owner</label>
+  <%= data[2] %> -->
+
+
+  <!-- <form action="getPdf" method="post">
+    <br>
+    <br>
+    <center>DOWNLOAD ASSET</center>
+    <input type="text" name="adrs" placeholder="Address of Winner">
+    <input type="text" name="url" placeholder="IPFS URl">
+    <input type="submit" value="download">
+</form> -->
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+
+    document.getElementById("withdrawBid").addEventListener("click", withdrawBid, false);
+    document.getElementById("bidValue").addEventListener("click", bidValue, false);
+    document.getElementById("getBidBack").addEventListener("click", getBidBack, false);
+    document.getElementById("bidAction").addEventListener("click", bidAction, false);
+    function bidValue() {
+      $.post("/getBid",
+        {
+
+          address: document.getElementById("address").value
+
+
+        },
+        function (tx, status) {
+          console.log("Data: " + tx + "\nStatus: " + status);
+          if (status == "success") {
+            document.getElementById("demo").innerHTML = tx;
+            alert(tx);
+
+          }
+        });
+    }
+    function withdrawBid() {
+      $.post("/withdrawBid",
+        {
+
+          AddressList: document.getElementById("AddressList").value
+
+
+        },
+        function (tx, status) {
+          console.log("Data: " + tx + "\nStatus: " + status);
+          if (status == "success") {
+            alert(tx);
+
+          }
+          location.reload();
+        });
+    }
+    function getBidBack() {
+      $.post("/getBidBack",
+        {
+          Address: document.getElementById("AddressList1").value
+
+        },
+        function (tx, status) {
+          console.log("Data: " + tx + "\nStatus: " + status);
+          if (status == "success") {
+            alert(tx);
+          }
+        });
+    }
+
+
+    function bidAction() {
+      $.post("/bidFor",
+        {
+
+          Bidders: document.getElementById("Bidders").value,
+          amount: document.getElementById("amount").value
+
+        },
+        function (tx, status) {
+          console.log("Data: " + tx + "\nStatus: " + status);
+          if (status == "success") {
+          alert(tx);
+           
+          }
+          
+          location.reload();
+
+        });
+    }
+  </script>
+  
+</body>
+
+</html>
