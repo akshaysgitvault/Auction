@@ -58,7 +58,7 @@ app.use('/getBid', getBidRouter);
 app.use('/getBidBack', getBidBackRouter);
 app.use('/withdrawBid', withdrawouter);
 app.use('/createAsset',createAssetRouter);
-//////////////////////////////////////////////////////
+//////////////////////////////////////////
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
